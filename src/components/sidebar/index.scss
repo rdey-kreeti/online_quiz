@@ -18,6 +18,25 @@
     margin-left: 15px;
     cursor: pointer;
 
+    &.not-visited {
+      background-color: #ccc;
+    }
+
+    &.active {
+      background-color: green;
+      color: #fff;
+    }
+
+    &.answered {
+      background-color: orange;
+      color: #fff;
+    }
+
+    &.visited {
+      background-color: purple;
+      color: #fff;
+    }
+
     &:first-child {
       margin-left: 0;
     }

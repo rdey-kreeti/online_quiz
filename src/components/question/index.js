@@ -10,9 +10,8 @@ const Question = ({currentQuestion, handleOptionSelect, selectedAnswerId, totalQ
       <p className="question__item">{`${currentQuestionIndex + 1}. `}{currentQuestion.question}</p>
       <ul className="question__options">
         {currentQuestion.options.map((opt) =>
-          <li className="question__options__item">
+          <li className="question__options__item" key={opt.id}>
             <RadioInput
-              key={opt.id}
               label={opt.option}
               value={opt.option}
               name={opt.option}
