@@ -119,17 +119,11 @@ class Questions extends Component {
     this.setState({selectedAnswerId: answerId});
   }
 
-  nextQuestion = () => {
-    const {currentQuestionIndex, selectedAnswerId, candidateAnswers} = this.state;
+  submitCandidateAnswer = () => {
+    const {selectedAnswerId} = this.state;
+    let {candidateAnswers} = this.state;
     const currentQuestion = this.findQuestion();
     const currentQuestionId = currentQuestion.id;
-    const currentQuestionStatus = currentQuestion.status;
-
-    if (currentQuestionStatus === 'active' && selectedAnswerId === null) {
-      currentQuestion.status = 'visited';
-    } else {
-      currentQuestion.status = 'answered';
-    }
 
     if (selectedAnswerId !== null) {
       const previouslyAnsweredObj = candidateAnswers.find((answer) => answer.questionId === currentQuestionId);
@@ -137,29 +131,56 @@ class Questions extends Component {
       if (previouslyAnsweredObj !== undefined) {
         previouslyAnsweredObj.answerId = selectedAnswerId;
       } else {
-        candidateAnswers.push({questionId: currentQuestionId, answerId: selectedAnswerId});
-        this.setState({candidateAnswers: candidateAnswers});
+        const updateCandidateAnswers = [...candidateAnswers, {questionId: currentQuestionId, answerId: selectedAnswerId}];
+        this.setState({candidateAnswers: updateCandidateAnswers});
       }
     }
+  }
 
+  updateQuestionStatus = () => {
+    const {selectedAnswerId} = this.state;
+    const currentQuestion = this.findQuestion();
+    const currentQuestionStatus = currentQuestion.status;
+
+    if (currentQuestionStatus === 'active' && selectedAnswerId === null) {
+      currentQuestion.status = 'visited';
+    } else {
+      currentQuestion.status = 'answered';
+    }
+  }
+
+  nextQuestion = () => {
+    const {currentQuestionIndex} = this.state;
+
+    this.updateQuestionStatus();
+    this.submitCandidateAnswer();
     this.setState({currentQuestionIndex: currentQuestionIndex + 1, selectedAnswerId: null });
   }
 
   handleQuestionRevisit = (clickedItemId) => {
     const {candidateAnswers} = this.state;
-    const getClickedItemIndex = questions.findIndex((question) => question.id === clickedItemId);
+    const getClickedQuestionIndex = questions.findIndex((question) => question.id === clickedItemId);
     const previouslyAnsweredObj = candidateAnswers.find((answer) => answer.questionId === clickedItemId);
 
     if (previouslyAnsweredObj !== undefined) {
-      const getSelectedAnswerId = candidateAnswers.find((answer) => answer.questionId === clickedItemId).answerId;
-      this.setState({currentQuestionIndex: getClickedItemIndex, selectedAnswerId: getSelectedAnswerId});
+      const getSelectedAnswerId = previouslyAnsweredObj.answerId;
+      this.setState({currentQuestionIndex: getClickedQuestionIndex, selectedAnswerId: getSelectedAnswerId});
     } else {
-      this.setState({currentQuestionIndex: getClickedItemIndex, selectedAnswerId: null});
+      this.setState({currentQuestionIndex: getClickedQuestionIndex, selectedAnswerId: null});
     }
+
+    this.updateQuestionStatus();
+    this.submitCandidateAnswer();
   }
 
   handleFinish = () => {
     this.setState({isFinish: true});
+  }
+
+  handleReset = (questionId) => {
+    const {candidateAnswers} = this.state;
+    const updateCandidateAnswers = candidateAnswers.filter((answer) => answer.questionId !== questionId);
+    this.setState({ candidateAnswers: updateCandidateAnswers, selectedAnswerId: null });
   }
 
   calculateScore = () => {
@@ -175,6 +196,24 @@ class Questions extends Component {
     return score;
   }
 
+  timer = () => {
+    let currentTime = new Date().getTime();
+    let deadline = currentTime + 10*60*1000;
+    setInterval(() => {
+      let timeDifference = deadline - currentTime;
+
+      if (timeDifference >= 0) {
+        let mins = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+        let secs = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+        console.log(`${mins}:${secs}`);
+
+      } else {
+        console.log("The countdown is over!");
+      }
+    }, 1000)
+  };
+
   render() {
     const  question = this.questionToRender();
     const {isFinish} = this.state;
@@ -182,7 +221,7 @@ class Questions extends Component {
     return (
       <React.Fragment>
         {isFinish ? (
-          <span>{this.calculateScore()}</span>
+          <span className="score">You've scored: <span className="score__result">{this.calculateScore()}</span></span>
         ) : (
           <section className="questions-page">
             <Question
@@ -193,11 +232,13 @@ class Questions extends Component {
               currentQuestionIndex={this.state.currentQuestionIndex}
               handleNextQuestion={this.nextQuestion}
               handleFinish={this.handleFinish}
+              handleReset = {this.handleReset}
             />
             <Sidebar
               questions={questions}
               onClick={this.handleQuestionRevisit}
             />
+            {this.timer()}
           </section>
         )
         }

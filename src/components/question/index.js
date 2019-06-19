@@ -4,7 +4,7 @@ import Button from '../button';
 
 import './index.scss';
 
-const Question = ({currentQuestion, handleOptionSelect, selectedAnswerId, totalQuestions, currentQuestionIndex, handleNextQuestion, handleFinish}) => {
+const Question = ({currentQuestion, handleOptionSelect, selectedAnswerId, totalQuestions, currentQuestionIndex, handleNextQuestion, handleFinish, handleReset}) => {
   return (
     <section className="question">
       <p className="question__item">{`${currentQuestionIndex + 1}. `}{currentQuestion.question}</p>
@@ -28,6 +28,7 @@ const Question = ({currentQuestion, handleOptionSelect, selectedAnswerId, totalQ
         <Button type="button" text='Next' onClick={handleNextQuestion} />
       )
       }
+      <Button type="button" text="Reset" onClick={() => handleReset(currentQuestion.id)}/>
     </section>
   )
 }

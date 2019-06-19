@@ -9,7 +9,6 @@
   &__item {
     background-color: #fff;
     color: #333;
-    border: 1px solid #333;
     width: 25px;
     height: 25px;
     display: flex;
@@ -19,21 +18,22 @@
     cursor: pointer;
 
     &.not-visited {
-      background-color: #ccc;
+      background-color: #efefef;
+      color: #999;
     }
 
     &.active {
-      background-color: green;
-      color: #fff;
-    }
-
-    &.answered {
       background-color: orange;
       color: #fff;
     }
 
+    &.answered {
+      background-color: green;
+      color: #fff;
+    }
+
     &.visited {
-      background-color: purple;
+      background-color: orangered;
       color: #fff;
     }
 
