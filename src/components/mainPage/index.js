@@ -3,6 +3,8 @@ import LabelledInput from '../labelledInput';
 import Button from '../button';
 import InputValidation from '../inputValidation';
 
+import './index.scss';
+
 class HomePage extends Component {
   constructor(props) {
     super(props);
@@ -42,12 +44,12 @@ class HomePage extends Component {
   render() {
     const {errors} = this.state;
     return (
-      <React.Fragment>
+      <section className="login-form">
         <LabelledInput label="Name" type="text" placeholder="Name" name="name" value={this.state.name} onChange={this.onChange} error={errors.name} />
         <LabelledInput label="Email" type="email" placeholder="Email" name="email" value={this.state.email} onChange={this.onChange} error={errors.email} />
         <LabelledInput label="Date of Birth" type="date" placeholder="DOB" name="dateOfBirth" value={this.state.dateOfBirth} onChange={this.onChange} error={errors.dateOfBirth} />
-        <Button type="submit" text="Submit" onClick={this.onFormSubmit}/>
-      </React.Fragment>
+        <Button type="submit" text="Submit" block onClick={this.onFormSubmit}/>
+      </section>
     )
   }
 }

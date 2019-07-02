@@ -22,13 +22,15 @@ const Question = ({currentQuestion, handleOptionSelect, selectedAnswerId, totalQ
           </li>
         )}
       </ul>
-      {totalQuestions === currentQuestionIndex + 1 ? (
-        <Button type="button" text='Finish' onClick={handleFinish} />
-      ) : (
-        <Button type="button" text='Next' onClick={handleNextQuestion} />
-      )
-      }
-      <Button type="button" text="Reset" onClick={() => handleReset(currentQuestion.id)}/>
+      <section className="question__controls">
+        {totalQuestions === currentQuestionIndex + 1 ? (
+          <Button type="button" text='Finish' onClick={handleFinish} />
+        ) : (
+          <Button type="button" text='Next' onClick={handleNextQuestion} />
+        )
+        }
+        <Button type="button" text="Reset" onClick={() => handleReset(currentQuestion.id)} outline/>
+      </section>
     </section>
   )
 }

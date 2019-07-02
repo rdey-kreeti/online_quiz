@@ -4,9 +4,11 @@ import './index.scss';
 const LabelledInput = ({label, type, placeholder, name, value, onChange, error}) => {
   return (
     <div className="input-group">
-      <label className="input-group__label">{label}</label>
-      <input type={type} placeholder={placeholder} name={name} value={value} className="input-group__input" onChange={onChange} />
-      {error && <span>{error}</span>}
+      <section className="input-group__main">
+        <label className="input-group__main__label">{label}</label>
+        <input type={type} placeholder={placeholder} name={name} value={value} className="input-group__main__input" onChange={onChange} />
+      </section>
+      {error && <span className="input-group__error">{error}</span>}
     </div>
   )
 }
