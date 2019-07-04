@@ -1,9 +1,23 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import LabelledInput from '../labelledInput';
 import Button from '../button';
 import InputValidation from '../inputValidation';
+import {updateIsFinish} from '../../js/actions';
 
 import './index.scss';
+
+const mapStateToProps = (state) => {
+  return {
+    isFinish: state.isFinish
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateIsFinish: (val) => dispatch(updateIsFinish(val))
+  }
+}
 
 class HomePage extends Component {
   constructor(props) {
@@ -37,6 +51,7 @@ class HomePage extends Component {
 
     if (isInputsValid) {
       localStorage.setItem('loggedInUser', JSON.stringify({name: name, email: email}));
+      this.props.updateIsFinish(false);
       this.props.history.push('/questions');
     }
   }
@@ -54,4 +69,4 @@ class HomePage extends Component {
   }
 }
 
-export default HomePage;
+export default connect (mapStateToProps, mapDispatchToProps) (HomePage);
