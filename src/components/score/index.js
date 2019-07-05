@@ -12,7 +12,7 @@ const mapStateToProps = (state) => {
 class Score extends Component {
   componentDidMount = () => {
     const {isFinish} = this.props;
-    console.log(isFinish)
+
     if (isFinish === null) {
       this.props.history.push('/');
     }

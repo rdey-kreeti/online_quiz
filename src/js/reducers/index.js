@@ -1,9 +1,4 @@
-const initialState = {
-  candidateAnswers: [],
-  isFinish: null
-}
-
-function rootReducer(state = initialState, action) {
+function rootReducer(state, action) {
   switch (action.type) {
     case 'TOGGLE_FINISH':
       return {

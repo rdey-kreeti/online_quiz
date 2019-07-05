@@ -32,6 +32,20 @@ class Questions extends Component {
     }
   }
 
+  componentDidMount = () => {
+    const candidateAnswers = this.props.candidateAnswers;
+    const currentQuestion = this.findQuestion();
+    const currentQuestionId = currentQuestion.id;
+    const previouslyAnsweredObj = candidateAnswers.find((answer) => answer.questionId === currentQuestionId);
+
+    if (previouslyAnsweredObj !== undefined) {
+      const getSelectedAnswerId = previouslyAnsweredObj.answerId;
+      this.setState({selectedAnswerId: getSelectedAnswerId});
+    } else {
+      this.setState({selectedAnswerId: null});
+    }
+  }
+
   findQuestion = () => {
     return questionsData.find((question, index) => index === this.state.currentQuestionIndex);
   }
@@ -131,7 +145,6 @@ class Questions extends Component {
 
   render() {
     const  question = this.questionToRender();
-    console.log(this.props.isFinish);
 
     return (
       <section className="questions-page">

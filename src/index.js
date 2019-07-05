@@ -7,6 +7,7 @@ import './index.css';
 import Questions from './components/questions';
 import HomePage from './components/mainPage';
 import Score from './components/score';
+import {saveData} from './js/localStorage';
 
 const routing = (
   <Router>
@@ -17,6 +18,10 @@ const routing = (
     </Switch>
   </Router>
 )
+
+store.subscribe(() => {
+  saveData(store.getState());
+});
 
 
 ReactDOM.render(<Provider store={store}>{routing}</Provider>, document.getElementById('root'));
