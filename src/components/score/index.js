@@ -15,8 +15,7 @@ class Score extends Component {
 
     if (isFinish === null) {
       this.props.history.push('/');
-    }
-    if (isFinish === false) {
+    } else if (isFinish === false) {
       this.props.history.push('/questions');
     }
   }

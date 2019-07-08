@@ -33,6 +33,7 @@ class Questions extends Component {
   }
 
   componentDidMount = () => {
+    const {isFinish} = this.props;
     const candidateAnswers = this.props.candidateAnswers;
     const currentQuestion = this.findQuestion();
     const currentQuestionId = currentQuestion.id;
@@ -43,6 +44,12 @@ class Questions extends Component {
       this.setState({selectedAnswerId: getSelectedAnswerId});
     } else {
       this.setState({selectedAnswerId: null});
+    }
+
+    if (isFinish === null) {
+      this.props.history.push('/');
+    } else if (isFinish === true) {
+      this.props.history.push('/score');
     }
   }
 
@@ -89,12 +96,24 @@ class Questions extends Component {
     }
   }
 
+  isNextQuestionAnswered = () => {
+    const candidateAnswers = this.props.candidateAnswers;
+    const nextQuestion = questionsData.find((question, index) => index === (this.state.currentQuestionIndex + 1));
+    const nextQuestionId = nextQuestion.id;
+    const previouslyAnsweredObj = candidateAnswers.find(answer => answer.questionId === nextQuestionId);
+    if (previouslyAnsweredObj !== undefined) {
+      return previouslyAnsweredObj.answerId;
+    } else {
+      return null
+    }
+  }
+
   nextQuestion = () => {
     const {currentQuestionIndex} = this.state;
 
     this.updateQuestionStatus();
     this.submitCandidateAnswer();
-    this.setState({currentQuestionIndex: currentQuestionIndex + 1, selectedAnswerId: null });
+    this.setState({currentQuestionIndex: currentQuestionIndex + 1, selectedAnswerId: this.isNextQuestionAnswered() });
   }
 
   handleQuestionRevisit = (clickedItemId) => {

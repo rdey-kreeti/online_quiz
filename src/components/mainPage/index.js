@@ -31,6 +31,16 @@ class HomePage extends Component {
     }
   }
 
+  componentDidMount = () => {
+    const {isFinish} = this.props;
+
+    if (isFinish === false) {
+      this.props.history.push('/questions');
+    } else if (isFinish === true) {
+      this.props.history.push('/score');
+    }
+  }
+
   onChange = (e) => {
     this.setState({[e.target.name]: e.target.value})
   }
