@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Question from '../question';
 import Sidebar from '../sidebar';
-import {questionToRender, nextQuestion, updateQuestionStatus, updateCurrentQuestionStatus, updateIsFinish, addCandidateAnswer, resetCandidateAnswer, updateQuestionRevisit} from '../../js/actions';
+import {questionToRender, nextQuestion, updateCurrentQuestionStatus, updateIsFinish, addCandidateAnswer, resetCandidateAnswer, updateQuestionRevisit} from '../../js/actions';
 
 import './index.scss';
 
@@ -20,7 +20,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     questionToRender: (val) => dispatch(questionToRender(val)),
     nextQuestion: (val) => dispatch(nextQuestion(val)),
-    updateQuestionStatus: (val) => dispatch(updateQuestionStatus(val)),
     updateCurrentQuestionStatus: () => dispatch(updateCurrentQuestionStatus()),
     updateQuestionRevisit: (val) => dispatch(updateQuestionRevisit(val)),
     updateIsFinish: (val) => dispatch(updateIsFinish(val)),
@@ -39,24 +38,14 @@ class Questions extends Component {
   }
 
   componentDidMount = () => {
-    // const {isFinish} = this.props;
-    // const candidateAnswers = this.props.candidateAnswers;
-    // const currentQuestion = this.findQuestion();
-    // const currentQuestionId = currentQuestion.id;
-    // const previouslyAnsweredObj = candidateAnswers.find((answer) => answer.questionId === currentQuestionId);
+    const {isFinish} = this.props;
 
-    // if (previouslyAnsweredObj !== undefined) {
-    //   const getSelectedAnswerId = previouslyAnsweredObj.answerId;
-    //   this.setState({selectedAnswerId: getSelectedAnswerId});
-    // } else {
-    //   this.setState({selectedAnswerId: null});
-    // }
+    if (isFinish === null) {
+      this.props.history.push('/');
+    } else if (isFinish === true) {
+      this.props.history.push('/score');
+    }
 
-    // if (isFinish === null) {
-    //   this.props.history.push('/');
-    // } else if (isFinish === true) {
-    //   this.props.history.push('/score');
-    // }
     this.props.questionToRender();
     this.props.updateCurrentQuestionStatus();
   }
@@ -64,35 +53,6 @@ class Questions extends Component {
   onRadioSelect = (answerId) => {
     this.setState({selectedAnswerId: answerId});
   }
-
-  // submitCandidateAnswer = () => {
-  //   const {selectedAnswerId} = this.state;
-  //   let candidateAnswers = this.props.candidateAnswers;
-  //   const currentQuestion = this.findQuestion();
-  //   const currentQuestionId = currentQuestion.id;
-
-  //   if (selectedAnswerId !== null) {
-  //     const previouslyAnsweredObj = candidateAnswers.find((answer) => answer.questionId === currentQuestionId);
-
-  //     if (previouslyAnsweredObj !== undefined) {
-  //       previouslyAnsweredObj.answerId = selectedAnswerId;
-  //     } else {
-  //       this.props.updateCandidateAnswer({questionId: currentQuestionId, answerId: selectedAnswerId});
-  //     }
-  //   }
-  // }
-
-  // updateQuestionStatus = () => {
-  //   const {selectedAnswerId} = this.state;
-  //   const currentQuestion = this.findQuestion();
-  //   const currentQuestionStatus = currentQuestion.status;
-
-  //   if (currentQuestionStatus === 'active' && selectedAnswerId === null) {
-  //     currentQuestion.status = 'visited';
-  //   } else {
-  //     currentQuestion.status = 'answered';
-  //   }
-  // }
 
   isNextQuestionAnswered = () => {
     const candidateAnswers = this.props.candidateAnswers;
@@ -117,16 +77,14 @@ class Questions extends Component {
     const getClickedQuestionIndex = this.props.questions.findIndex((question) => question.id === clickedItemId);
     const previouslyAnsweredObj = candidateAnswers.find((answer) => answer.questionId === clickedItemId);
 
-    this.props.updateQuestionRevisit(getClickedQuestionIndex);
-
     if (previouslyAnsweredObj !== undefined) {
       const getSelectedAnswerId = previouslyAnsweredObj.answerId;
       this.setState({selectedAnswerId: getSelectedAnswerId});
     } else {
       this.setState({selectedAnswerId: null});
     }
+    this.props.updateQuestionRevisit({index: getClickedQuestionIndex, selectedAnswerId: this.state.selectedAnswerId});
     this.props.questionToRender();
-    // this.submitCandidateAnswer();
   }
 
   handleFinish = () => {

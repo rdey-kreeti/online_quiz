@@ -4,19 +4,16 @@ const findQuestion = (state) => {
   return {...currentQuestion};
 }
 
-const updateQuestionStatus = (state, selectedAnswerId) => {
-  const questions = [...state.questions];
-  const currentQuestionIndex = state.currentQuestionIndex;
-  const currentQuestion = questions.find((question, index) => index === currentQuestionIndex);
-  const currentQuestionStatus = currentQuestion.status;
-
-  if (currentQuestionStatus === 'active' && selectedAnswerId === null) {
-    currentQuestion.status = 'visited';
-  } else if (currentQuestionStatus === 'active' && selectedAnswerId !== null) {
-    currentQuestion.status = 'answered';
-  }
-
-  return questions;
+const updateQuestionStatus = (state, selectedQuestionId, selectedAnswerId) => {
+  return state.questions.map(question => {
+    if (question.id === selectedQuestionId && question.status === 'active' && selectedAnswerId === null) {
+      return { ...question, status: 'visited' };
+    } else if (question.id === selectedQuestionId && question.status === 'active' && selectedAnswerId !== null) {
+      return {...question, status: 'answered'};
+    } else {
+      return {...question}
+    }
+  })
 }
 
 const updateCurrentQuestionStatus = (state) => {
@@ -47,22 +44,6 @@ const submitCandidateAnswer = (state, answerId) => {
   return candidateAnswers;
 }
 
-// const handleQuestionRevisit = (clickedItemId) => {
-//   const candidateAnswers = this.props.candidateAnswers;
-//   const getClickedQuestionIndex = this.props.questions.findIndex((question) => question.id === clickedItemId);
-//   const previouslyAnsweredObj = candidateAnswers.find((answer) => answer.questionId === clickedItemId);
-
-//   if (previouslyAnsweredObj !== undefined) {
-//     const getSelectedAnswerId = previouslyAnsweredObj.answerId;
-//     this.setState({currentQuestionIndex: getClickedQuestionIndex, selectedAnswerId: getSelectedAnswerId});
-//   } else {
-//     this.setState({currentQuestionIndex: getClickedQuestionIndex, selectedAnswerId: null});
-//   }
-
-//   this.updateQuestionStatus();
-//   this.submitCandidateAnswer();
-// }
-
 
 
 function rootReducer(state, action) {
@@ -76,9 +57,10 @@ function rootReducer(state, action) {
       }
     case 'NEXT_QUESTION':
       const updateCandidateAnswer = submitCandidateAnswer(state, action.payload);
-      updateQuestionStatus(state, action.payload);
+      const updatedQuestionStatus = updateQuestionStatus(state, state.currentQuestion.id, action.payload);
       return {
         ...state,
+        questions: updatedQuestionStatus,
         candidateAnswers: updateCandidateAnswer,
         currentQuestionIndex: state.currentQuestionIndex + 1,
       }
@@ -99,18 +81,14 @@ function rootReducer(state, action) {
         candidateAnswers: [...action.payload]
       }
 
-    case 'UPDATE_QUESTION_STATUS':
-      const updatedQuestions = updateQuestionStatus(state, action.payload);
-      return {
-        ...state,
-        questions: updatedQuestions
-      }
-
     case 'UPDATE_QUESTION_REVISIT':
-        updateQuestionStatus(state, action.payload);
+      const updateCandidateAnswerAgain = submitCandidateAnswer(state, action.payload.selectedAnswerId);
+      const updateQuestionStatusAgain = updateQuestionStatus(state, state.currentQuestion.id, action.payload.selectedAnswerId);
       return {
         ...state,
-        currentQuestionIndex: action.payload
+        questions: updateQuestionStatusAgain,
+        currentQuestionIndex: action.payload.index,
+        candidateAnswers: updateCandidateAnswerAgain
       }
     default:
       return state
