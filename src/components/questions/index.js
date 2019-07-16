@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Question from '../question';
 import Sidebar from '../sidebar';
-import {questionToRender, nextQuestion, updateQuestionStatus, updateCurrentQuestionStatus, updateIsFinish, addCandidateAnswer, resetCandidateAnswer} from '../../js/actions';
+import {questionToRender, nextQuestion, updateQuestionStatus, updateCurrentQuestionStatus, updateIsFinish, addCandidateAnswer, resetCandidateAnswer, updateQuestionRevisit} from '../../js/actions';
 
 import './index.scss';
 
@@ -22,6 +22,7 @@ const mapDispatchToProps = (dispatch) => {
     nextQuestion: (val) => dispatch(nextQuestion(val)),
     updateQuestionStatus: (val) => dispatch(updateQuestionStatus(val)),
     updateCurrentQuestionStatus: () => dispatch(updateCurrentQuestionStatus()),
+    updateQuestionRevisit: (val) => dispatch(updateQuestionRevisit(val)),
     updateIsFinish: (val) => dispatch(updateIsFinish(val)),
     updateCandidateAnswer: (val) => dispatch(addCandidateAnswer(val)),
     resetCandidateAnswer: (val) => dispatch(resetCandidateAnswer(val))
@@ -106,11 +107,6 @@ class Questions extends Component {
   }
 
   nextQuestion = () => {
-    // const {currentQuestionIndex} = this.state;
-
-    // this.updateQuestionStatus();
-    // this.submitCandidateAnswer();
-    // this.setState({currentQuestionIndex: currentQuestionIndex + 1, selectedAnswerId: this.isNextQuestionAnswered() });
     this.props.nextQuestion(this.state.selectedAnswerId);
     this.setState({selectedAnswerId: null});
     this.props.questionToRender();
@@ -121,15 +117,16 @@ class Questions extends Component {
     const getClickedQuestionIndex = this.props.questions.findIndex((question) => question.id === clickedItemId);
     const previouslyAnsweredObj = candidateAnswers.find((answer) => answer.questionId === clickedItemId);
 
+    this.props.updateQuestionRevisit(getClickedQuestionIndex);
+
     if (previouslyAnsweredObj !== undefined) {
       const getSelectedAnswerId = previouslyAnsweredObj.answerId;
-      this.setState({currentQuestionIndex: getClickedQuestionIndex, selectedAnswerId: getSelectedAnswerId});
+      this.setState({selectedAnswerId: getSelectedAnswerId});
     } else {
-      this.setState({currentQuestionIndex: getClickedQuestionIndex, selectedAnswerId: null});
+      this.setState({selectedAnswerId: null});
     }
-
-    this.updateQuestionStatus();
-    this.submitCandidateAnswer();
+    this.props.questionToRender();
+    // this.submitCandidateAnswer();
   }
 
   handleFinish = () => {

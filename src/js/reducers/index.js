@@ -47,6 +47,22 @@ const submitCandidateAnswer = (state, answerId) => {
   return candidateAnswers;
 }
 
+// const handleQuestionRevisit = (clickedItemId) => {
+//   const candidateAnswers = this.props.candidateAnswers;
+//   const getClickedQuestionIndex = this.props.questions.findIndex((question) => question.id === clickedItemId);
+//   const previouslyAnsweredObj = candidateAnswers.find((answer) => answer.questionId === clickedItemId);
+
+//   if (previouslyAnsweredObj !== undefined) {
+//     const getSelectedAnswerId = previouslyAnsweredObj.answerId;
+//     this.setState({currentQuestionIndex: getClickedQuestionIndex, selectedAnswerId: getSelectedAnswerId});
+//   } else {
+//     this.setState({currentQuestionIndex: getClickedQuestionIndex, selectedAnswerId: null});
+//   }
+
+//   this.updateQuestionStatus();
+//   this.submitCandidateAnswer();
+// }
+
 
 
 function rootReducer(state, action) {
@@ -59,7 +75,8 @@ function rootReducer(state, action) {
         currentQuestion: currentQuestion
       }
     case 'NEXT_QUESTION':
-      const updateCandidateAnswer = submitCandidateAnswer(state, action.payload)
+      const updateCandidateAnswer = submitCandidateAnswer(state, action.payload);
+      updateQuestionStatus(state, action.payload);
       return {
         ...state,
         candidateAnswers: updateCandidateAnswer,
@@ -87,6 +104,13 @@ function rootReducer(state, action) {
       return {
         ...state,
         questions: updatedQuestions
+      }
+
+    case 'UPDATE_QUESTION_REVISIT':
+        updateQuestionStatus(state, action.payload);
+      return {
+        ...state,
+        currentQuestionIndex: action.payload
       }
     default:
       return state

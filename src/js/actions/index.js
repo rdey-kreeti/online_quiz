@@ -23,6 +23,9 @@ export function updateCurrentQuestionStatus(payload) {
 }
 
 export function updateQuestionStatus(payload) {
-  console.log(payload, 'actions')
   return {type: 'UPDATE_QUESTION_STATUS', payload}
+}
+
+export function updateQuestionRevisit(payload) {
+  return {type: 'UPDATE_QUESTION_REVISIT', payload}
 }
