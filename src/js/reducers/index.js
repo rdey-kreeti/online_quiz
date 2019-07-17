@@ -1,5 +1,23 @@
+import * as util from '../helpers';
+
 function rootReducer(state, action) {
   switch (action.type) {
+    case 'QUESTION_TO_RENDER':
+        let currentQuestion = util.findQuestion(state);
+        util.updateCurrentQuestionStatus(state);
+      return {
+        ...state,
+        currentQuestion: currentQuestion
+      }
+    case 'NEXT_QUESTION':
+      const updateCandidateAnswer = util.submitCandidateAnswer(state, action.payload);
+      const updatedQuestionStatus = util.updateQuestionStatus(state, state.currentQuestion.id, action.payload);
+      return {
+        ...state,
+        questions: updatedQuestionStatus,
+        candidateAnswers: updateCandidateAnswer,
+        currentQuestionIndex: state.currentQuestionIndex + 1,
+      }
     case 'TOGGLE_FINISH':
       return {
         ...state,
@@ -15,6 +33,16 @@ function rootReducer(state, action) {
       return {
         ...state,
         candidateAnswers: [...action.payload]
+      }
+
+    case 'UPDATE_QUESTION_REVISIT':
+      const updateCandidateAnswerAgain = util.submitCandidateAnswer(state, action.payload.selectedAnswerId);
+      const updateQuestionStatusAgain = util.updateQuestionStatus(state, state.currentQuestion.id, action.payload.selectedAnswerId);
+      return {
+        ...state,
+        questions: updateQuestionStatusAgain,
+        currentQuestionIndex: action.payload.index,
+        candidateAnswers: updateCandidateAnswerAgain
       }
     default:
       return state
