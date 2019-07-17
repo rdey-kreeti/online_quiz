@@ -56,7 +56,7 @@ class Questions extends Component {
 
   isNextQuestionAnswered = () => {
     const candidateAnswers = this.props.candidateAnswers;
-    const nextQuestion = this.props.questions.find((question, index) => index === (this.state.currentQuestionIndex + 1));
+    const nextQuestion = this.props.questions.find((question, index) => index === (this.props.currentQuestionIndex + 1));
     const nextQuestionId = nextQuestion.id;
     const previouslyAnsweredObj = candidateAnswers.find(answer => answer.questionId === nextQuestionId);
     if (previouslyAnsweredObj !== undefined) {
@@ -68,7 +68,7 @@ class Questions extends Component {
 
   nextQuestion = () => {
     this.props.nextQuestion(this.state.selectedAnswerId);
-    this.setState({selectedAnswerId: null});
+    this.setState({selectedAnswerId: this.isNextQuestionAnswered()});
     this.props.questionToRender();
   }
 
