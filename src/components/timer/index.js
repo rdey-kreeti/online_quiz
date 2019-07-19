@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import './index.scss'
 
 class Timer extends Component {
   constructor(props) {
@@ -29,8 +30,9 @@ class Timer extends Component {
 
     this.setState({minutes: min, seconds: sec});
 
-    if (min == 0 && sec == 0) {
+    if (parseInt(min, 10) === 0 && parseInt(sec, 10) === 0) {
       clearInterval(this.intervalHandle);
+      this.props.autoSubmit();
     }
 
     this.secondsRemaining--
@@ -45,7 +47,12 @@ class Timer extends Component {
 
   render() {
     return (
-      <div>{this.state.minutes}:{this.state.seconds}</div>
+      <span className={parseInt(this.state.minutes, 10) === 0 && parseInt(this.state.seconds) <= 10 ? 'timer red blink' : 'timer'}>
+        <span>Time left: </span>
+        <span>
+          {this.state.minutes} : {this.state.seconds}
+        </span>
+      </span>
     )
   }
 }

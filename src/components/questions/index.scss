@@ -5,13 +5,20 @@
 
 .score {
   display: flex;
-  font-size: 32px;
+  flex-direction: column;
+  font-size: 26px;
   align-items: center;
   justify-content: center;
   height: 100vh;
+  width: 400px;
+  margin: 0 auto;
+  padding: 25px;
 
-  &__result {
-    font-weight: 500;
-    margin-left: 5px;
+  &__user-name {
+    margin-bottom: 0;
+  }
+
+  &__user-score {
+    margin: 5px 0 25px;
   }
 }

@@ -1,0 +1,28 @@
+.timer {
+  width: 550px;
+  padding: 25px 0 0 0;
+  margin: 0 auto;
+  text-align: right;
+}
+
+.blink {
+  animation: blink 0.8s linear infinite;
+}
+
+.red {
+  color: red;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
