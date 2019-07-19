@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import Question from '../question';
 import Sidebar from '../sidebar';
 import {questionToRender, nextQuestion, updateCurrentQuestionStatus, updateIsFinish, addCandidateAnswer, resetCandidateAnswer, updateQuestionRevisit} from '../../js/actions';
+import Timer from '../timer';
 
 import './index.scss';
 
@@ -99,30 +100,13 @@ class Questions extends Component {
     this.setState({ selectedAnswerId: null });
   }
 
-  // timer = () => {
-  //   let currentTime = new Date().getTime();
-  //   let deadline = currentTime + 10*60*1000;
-  //   setInterval(() => {
-  //     let timeDifference = deadline - currentTime;
-
-  //     if (timeDifference >= 0) {
-  //       let mins = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-  //       let secs = Math.floor((timeDifference % (1000 * 60)) / 1000);
-
-  //       console.log(`${mins}:${secs}`);
-
-  //     } else {
-  //       console.log("The countdown is over!");
-  //     }
-  //   }, 1000)
-  // };
-
   render() {
     const question = this.props.currentQuestion;
 
     if(Object.keys(question).length) {
       return (
         <section className="questions-page">
+          <Timer autoSubmit={this.handleFinish}/>
           <Question
             currentQuestion={question}
             handleOptionSelect={this.onRadioSelect}
@@ -137,7 +121,6 @@ class Questions extends Component {
             questions={this.props.questions}
             onClick={this.handleQuestionRevisit}
           />
-          {/* {this.timer()} */}
         </section>
       )
     } else {

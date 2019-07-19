@@ -1,4 +1,5 @@
 import * as util from '../helpers';
+import questions from '../../fixtures/questions';
 
 function rootReducer(state, action) {
   switch (action.type) {
@@ -44,6 +45,18 @@ function rootReducer(state, action) {
         currentQuestionIndex: action.payload.index,
         candidateAnswers: updateCandidateAnswerAgain
       }
+
+      case 'RESTART_QUIZ':
+        localStorage.removeItem('loggedInUser');
+        localStorage.removeItem('image');
+        return {
+          ...state,
+          isFinish: null,
+          candidateAnswers: [],
+          questions,
+          currentQuestionIndex: 0,
+          currentQuestion: {}
+        }
     default:
       return state
   }

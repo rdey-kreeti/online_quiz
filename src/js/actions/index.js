@@ -29,3 +29,7 @@ export function updateQuestionStatus(payload) {
 export function updateQuestionRevisit(payload) {
   return {type: 'UPDATE_QUESTION_REVISIT', payload}
 }
+
+export function restartQuiz(payload) {
+  return {type: 'RESTART_QUIZ', payload}
+}

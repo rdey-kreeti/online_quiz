@@ -41,6 +41,24 @@ class HomePage extends Component {
     }
   }
 
+  todayDate() {
+    let today = new Date();
+    let dd = today.getDate();
+    let mm = today.getMonth()+1;
+    let yyyy = today.getFullYear();
+
+    if(dd < 10) {
+      dd ='0'+ dd;
+    }
+
+    if (mm < 10) {
+      mm = '0' + mm;
+    }
+
+    today = yyyy + '-' + mm + '-' + dd;
+    return today;
+  }
+
   onChange = (e) => {
     this.setState({[e.target.name]: e.target.value})
   }
@@ -72,7 +90,7 @@ class HomePage extends Component {
       <section className="login-form">
         <LabelledInput label="Name" type="text" placeholder="Name" name="name" value={this.state.name} onChange={this.onChange} error={errors.name} />
         <LabelledInput label="Email" type="email" placeholder="Email" name="email" value={this.state.email} onChange={this.onChange} error={errors.email} />
-        <LabelledInput label="Date of Birth" type="date" placeholder="DOB" name="dateOfBirth" value={this.state.dateOfBirth} onChange={this.onChange} error={errors.dateOfBirth} />
+        <LabelledInput label="Date of Birth" type="date" placeholder="DOB" name="dateOfBirth" value={this.state.dateOfBirth} onChange={this.onChange} error={errors.dateOfBirth} max={this.todayDate()} />
         <Button type="submit" text="Submit" block onClick={this.onFormSubmit}/>
       </section>
     )
