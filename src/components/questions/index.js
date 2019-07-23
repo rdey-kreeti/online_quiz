@@ -6,6 +6,7 @@ import {questionToRender, nextQuestion, updateCurrentQuestionStatus, updateIsFin
 import Timer from '../timer';
 
 import './index.scss';
+import Button from '../button';
 
 const mapStateToProps = (state) => {
   return {
@@ -106,7 +107,10 @@ class Questions extends Component {
     if(Object.keys(question).length) {
       return (
         <section className="questions-page">
-          <Timer autoSubmit={this.handleFinish}/>
+          <section className="questions-header">
+            <Timer autoSubmit={this.handleFinish}/>
+            <Button type="button" text="End Exam" onClick={this.handleFinish} outline/>
+          </section>
           <Question
             currentQuestion={question}
             handleOptionSelect={this.onRadioSelect}

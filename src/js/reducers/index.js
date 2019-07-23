@@ -48,15 +48,24 @@ function rootReducer(state, action) {
 
       case 'RESTART_QUIZ':
         localStorage.removeItem('loggedInUser');
-        localStorage.removeItem('image');
+        localStorage.removeItem('state');
         return {
           ...state,
           isFinish: null,
           candidateAnswers: [],
           questions,
           currentQuestionIndex: 0,
-          currentQuestion: {}
+          currentQuestion: {},
+          minutes: '05',
+          seconds: '00'
         }
+
+        case 'UPDATE_TIMER':
+          return {
+            ...state,
+            minutes: action.payload.minutes,
+            seconds: action.payload.seconds
+          }
     default:
       return state
   }

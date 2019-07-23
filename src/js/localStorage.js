@@ -8,7 +8,9 @@ export const loadData = () => {
       candidateAnswers: [],
       questions,
       currentQuestionIndex: 0,
-      currentQuestion: {}
+      currentQuestion: {},
+      minutes: '05',
+      seconds: '00'
     };
   }
   return JSON.parse(serializedState);
