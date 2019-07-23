@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './index.scss';
 
 const Button = ({type, text, onClick, block, outline}) => {
@@ -17,6 +18,14 @@ const Button = ({type, text, onClick, block, outline}) => {
   return (
     <button type={type} className={abc(block, outline)} onClick={onClick}>{text}</button>
   )
+}
+
+Button.propTypes = {
+  type: PropTypes.string,
+  text: PropTypes.string,
+  onClick: PropTypes.func,
+  block: PropTypes.bool,
+  outline: PropTypes.bool
 }
 
 export default Button;

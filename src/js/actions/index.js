@@ -33,3 +33,7 @@ export function updateQuestionRevisit(payload) {
 export function restartQuiz(payload) {
   return {type: 'RESTART_QUIZ', payload}
 }
+
+export function updateTimer(payload) {
+  return {type: 'UPDATE_TIMER', payload}
+}

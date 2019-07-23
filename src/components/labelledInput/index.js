@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './index.scss';
 
 const LabelledInput = ({label, type, placeholder, name, value, onChange, error, max}) => {
@@ -11,6 +12,17 @@ const LabelledInput = ({label, type, placeholder, name, value, onChange, error, 
       {error && <span className="input-group__error">{error}</span>}
     </div>
   )
+}
+
+LabelledInput.propTypes = {
+  label: PropTypes.string,
+  type: PropTypes.string,
+  placeholder: PropTypes.string,
+  name: PropTypes.string,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+  error: PropTypes.string,
+  max: PropTypes.string
 }
 
 export default LabelledInput;

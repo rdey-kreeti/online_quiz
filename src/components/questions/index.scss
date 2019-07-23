@@ -1,6 +1,17 @@
-.questions-page {
-  display: flex;
-  flex-direction: column;
+.questions {
+  &-page {
+    display: flex;
+    flex-direction: column;
+    width: 550px;
+    margin: 0 auto;
+  }
+
+  &-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
 }
 
 .score {
